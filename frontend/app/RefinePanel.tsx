@@ -77,17 +77,17 @@ export default function RefinePanel() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-[880px] px-5 py-12 sm:py-16">
-      <header className="mb-8">
+    <div className="mx-auto max-w-[880px] px-6 py-12 sm:py-16">
+      <header className="mb-8 border-l-2 border-accent pl-3">
         <h1 className="text-3xl font-bold tracking-tight text-text">
           Refine Text
         </h1>
-        <p className="mt-2 text-sm text-muted">
+        <p className="mt-2 text-sm text-text-secondary">
           Polish messy messages with adjustable tone. Results stream in real time.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InputPanel
           text={text}
           onTextChange={setText}
