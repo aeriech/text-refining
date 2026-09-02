@@ -140,7 +140,7 @@ Depth is achieved without a single shadow. Three surface tones stack in a fixed 
 - Monospace reserved strictly for numerals; prose is never monospace.
 - Radius shrinks inward (16 → 12 → 6px), so controls read as recessed, not stacked.
 - Two equal trays: input and output are siblings of identical weight, never primary and secondary.
-- Failure and degradation are shown in their own color, in the user's own words.
+- Failure and degradation are shown in their own color, in the user's own words — including failures of the surrounding system, like the clipboard.
 
 ## Colors
 
@@ -220,7 +220,7 @@ Inside it, a two-column grid with a **24px gutter** holds the input tray and the
 
 Both trays carry 24px interior padding and both reserve a **160px minimum body height**, matched deliberately: the output well is as tall as the input textarea before any text arrives, so the page does not shift when the stream begins. The textarea is user-resizable vertically; the output well grows with its content.
 
-Spacing follows a nine-step scale (4, 8, 12, 16, 24, 32, 48, 64, 96px) declared as custom properties in `globals.css`. The scale is not referenced directly in markup — the implementation uses Tailwind utilities — but every spacing value in the shipped UI lands on a step of it, so the scale is descriptive of real practice rather than aspirational. In practice the system leans almost entirely on steps 2, 3, 5, and 6 (8, 12, 24, 32px).
+Spacing follows a nine-step scale (4, 8, 12, 16, 24, 32, 48, 64, 96px). It is **documented here and implemented through Tailwind's default utilities**, not declared as custom properties — an earlier `--space-*` block was deleted because it generated no utilities and duplicated the same values, leaving two sources of truth. Every spacing value in the shipped UI lands on a step of this scale, so it describes real practice rather than intent. In practice the system leans almost entirely on steps 2, 3, 5, and 6 (8, 12, 24, 32px).
 
 ### Named Rules
 
@@ -306,6 +306,8 @@ Focus has two forms, chosen by whether the control has a border to spend:
 
 Both forms are `:focus-visible`, so pointer users never see them. The native outline is suppressed only where one of these replaces it.
 
+**Keyboard commit.** The textarea accepts ⌘/Ctrl + Enter to refine, declared with `aria-keyshortcuts` and shown as a Label-tier hint beside the action. The modifier glyph resolves after mount, because the correct key depends on the OS and a server-rendered guess would either flash the wrong one or break hydration. A paste-and-go tool should never require reaching for the mouse to commit.
+
 ### Sliders (Tone Controls)
 
 The product's most characteristic control, and the one place the system accepts a native platform element. A native `range` input tinted with the accent, wrapped in a three-part label frame:
@@ -317,7 +319,17 @@ The product's most characteristic control, and the one place the system accepts 
 
 ### Status & Error Notes
 
-Two variants of one form, appearing below the output well: 12px radius, 12px padding, Body-tier text, a 10% wash of the semantic color as background, and a 40%-opacity border in the same color. Status is periwinkle and reports what the machine is doing ("Refining…", a model switch, "Cancelled."); error is coral and reports a terminal failure. They are the same shape on purpose — degradation and failure are the same *kind* of message, differing only in severity.
+Three variants of one form, appearing below the output well: 12px radius, 12px padding, Body-tier text, and a 10% wash of the semantic color as background. Status is periwinkle and reports what the machine is doing ("Refining…", a model switch, "Cancelled."); the two failure notes are coral — one for a terminal stream error, one for a clipboard failure. They are the same shape on purpose: degradation and failure are the same *kind* of message, differing only in severity.
+
+Their borders are matched on **perceived weight, not opacity**. Coral is a lighter hue than periwinkle, so equal alpha reads unequal: at 60% the coral border measures 3.12:1 against the panel while periwinkle measures only 2.58:1. The system therefore ships `accent/70` (3.09:1) and `danger/60` (3.12:1) — different numbers, the same visual presence. Match the ratio when adding a note in a new color, not the percentage.
+
+### The Announcer (Signature Behavior)
+
+The panel carries exactly **one** polite live region, and it is invisible. It reports milestones — that refining started, and that a finished result is ready with its length and originating model — rather than narrating the stream. This is deliberate: announcing each streamed token mutates a live region dozens of times per result and buries a screen-reader user in partial sentences, which is a different failure from silence but a failure all the same. While a stream runs, the announcement string is constant, so no repeat announcements fire.
+
+The visible progress note is therefore **not** a live region; the announcer already covers it, and a second polite region would queue against the first. Failures are the exception: a terminal stream error and a clipboard failure each use `role="alert"`, because a failure has to interrupt.
+
+The result surface itself is a named `region` (labelled by "Refined output"), so assistive tech can navigate straight to the text on demand instead of receiving it as narration.
 
 ### Attribution Line
 
@@ -349,7 +361,9 @@ Under `prefers-reduced-motion: reduce` the caret **holds solid** rather than dis
 - **Do** give every new interactive control the focus standard — border-shift-plus-halo where there is a border, a 2px solid periwinkle ring at 2px offset where there is not — as `:focus-visible`, with the native outline suppressed only because it is being replaced.
 - **Do** put the interactive hairline (`#5b6782`) on anything operable and the quiet hairline (`#252a35`) on anything decorative. Audit test: if a user has to find the edge, it needs 3:1.
 - **Do** give any looping animation a reduced-motion alternative that *keeps the signal* and drops only the movement.
-- **Do** announce anything that arrives without a click: streamed output as a polite live region, errors as `role="alert"`.
+- **Do** keep exactly one polite live region per surface, reporting milestones rather than narrating a stream, and reserve `role="alert"` for failures that must interrupt.
+- **Do** report a failed side effect. A silent failure on the clipboard — this product's exit path — costs the user the entire result.
+- **Do** match a semantic border on its measured ratio (~3:1), not on its opacity percentage. Equal alpha across different hues reads as unequal weight.
 - **Do** set `tabular-nums` on any number that changes while the user is watching.
 - **Do** add positive letter-spacing (`0.025em`) to 14px text that labels something, and none to 14px text that is content.
 - **Do** reserve the destination before content arrives — matched minimum heights, so streaming never reflows the page.
@@ -370,6 +384,9 @@ Under `prefers-reduced-motion: reduce` the caret **holds solid** rather than dis
 - **Don't** use a 30%-opacity ring as a control's only focus indicator; at that opacity it measures 1.52:1 and is decoration.
 - **Don't** lean on a tonal step to make a boundary findable. The steps measure ~1.09:1 — they group, they do not delineate.
 - **Don't** kill animation wholesale under `prefers-reduced-motion`. Replace the motion, keep the meaning.
+- **Don't** stack polite live regions. Two that update during the same operation queue against each other and the user hears neither cleanly.
+- **Don't** put a live region on streaming text. Announce that the result is ready and let the reader navigate to it.
+- **Don't** trust `document.execCommand("copy")` without reading its return value; it reports failure by returning false, not by throwing.
 - **Don't** stack two state changes on one interaction, and don't replace the caret's stepped blink with a smooth pulse.
 - **Don't** use `#000` or `#fff` anywhere. Both ends of the range stay pulled inward.
 - **Don't** let a declared token sit unreferenced in `globals.css`. Tokens that generate no utility (the former `--space-*` block) are a second source of truth that will drift; either wire them up or delete them.

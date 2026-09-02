@@ -7,6 +7,7 @@ interface OutputPanelProps {
   attribution: string | null;
   error: string | null;
   copied: boolean;
+  copyFailed: boolean;
   onCopy: () => void;
 }
 
@@ -17,8 +18,22 @@ export default function OutputPanel({
   attribution,
   error,
   copied,
+  copyFailed,
   onCopy,
 }: OutputPanelProps) {
+  /* One polite announcer for the whole panel. Announcing every streamed token
+     would mutate a live region dozens of times per result and bury the user in
+     partial sentences, so this reports milestones instead: that refining
+     started, and that a finished result is ready to read. While streaming, the
+     string is constant, so no repeat announcements fire. */
+  const announcement = streaming
+    ? "Refining your message…"
+    : copied
+      ? "Refined text copied to clipboard"
+      : output
+        ? `Refined message ready, ${output.length} characters.${attribution ? ` ${attribution}.` : ""}`
+        : "";
+
   return (
     <div className="rounded-panel border border-border bg-panel p-6 transition-colors">
       <div className="flex items-center justify-between mb-2">
@@ -35,14 +50,12 @@ export default function OutputPanel({
         )}
       </div>
 
-      {/* The refined message is the whole deliverable, so it is announced as a
-          polite live region: assertive would interrupt on every token. */}
+      {/* A named region so assistive tech can jump straight to the result,
+          rather than a live region that narrates it token by token. */}
       <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="false"
-        aria-busy={streaming}
+        role="region"
         aria-labelledby="output-label"
+        aria-busy={streaming}
         className="min-h-[160px] rounded-control border border-border-subtle bg-panel-2 p-3 text-sm text-text leading-relaxed whitespace-pre-wrap break-words"
       >
         {output ? (
@@ -62,6 +75,10 @@ export default function OutputPanel({
         )}
       </div>
 
+      <span role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </span>
+
       <div className="mt-3 flex items-center gap-2">
         <button
           onClick={onCopy}
@@ -72,20 +89,14 @@ export default function OutputPanel({
         </button>
       </div>
 
-      {/* Copy confirmation is visual only on the button, so announce it once. */}
-      <span role="status" aria-live="polite" className="sr-only">
-        {copied ? "Refined text copied to clipboard" : ""}
-      </span>
-
+      {/* Progress is visible-only: the announcer above covers it for AT, and a
+          second live region would queue against it. */}
       {status && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="mt-3 rounded-control border border-accent/40 bg-accent-bg p-3 text-sm text-accent"
-        >
+        <div className="mt-3 rounded-control border border-accent/70 bg-accent-bg p-3 text-sm text-accent">
           {status}
         </div>
       )}
+
       {attribution && !error && (
         <div className="mt-3 flex items-center gap-2 text-label font-mono text-text-tertiary">
           <span
@@ -95,6 +106,17 @@ export default function OutputPanel({
           {attribution}
         </div>
       )}
+
+      {copyFailed && (
+        <div
+          role="alert"
+          className="mt-3 rounded-control border border-danger/60 bg-danger-bg p-3 text-sm text-danger"
+        >
+          Couldn’t reach your clipboard. Select the text above and copy it
+          manually.
+        </div>
+      )}
+
       {error && (
         <div
           role="alert"

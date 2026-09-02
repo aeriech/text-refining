@@ -44,6 +44,30 @@ function humanizeError(err: unknown): string {
   return idx !== -1 ? msg.slice(idx + 1).trim() : msg;
 }
 
+/**
+ * Abortable delay. Removes its own listener on every exit path — the previous
+ * inline version attached one per retry and never detached them, so a request
+ * that fell through the whole chain left listeners on the signal.
+ */
+function sleep(ms: number, signal: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal.aborted) {
+      reject(new Error("aborted"));
+      return;
+    }
+    const onAbort = () => {
+      clearTimeout(timer);
+      signal.removeEventListener("abort", onAbort);
+      reject(new Error("aborted"));
+    };
+    const timer = setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    signal.addEventListener("abort", onAbort);
+  });
+}
+
 function clamp(v: number, lo: number, hi: number): number {
   return Math.max(lo, Math.min(hi, v));
 }
@@ -119,14 +143,7 @@ async function* runStreamWithFallback(
 
     try {
       if (modelIdx > 0) {
-        const backoffMs = Math.min(modelIdx * 700, 4000);
-        await new Promise((resolve, reject) => {
-          const timer = setTimeout(resolve, backoffMs);
-          signal.addEventListener("abort", () => {
-            clearTimeout(timer);
-            reject(new Error("aborted"));
-          }, { once: true });
-        });
+        await sleep(Math.min(modelIdx * 700, 4000), signal);
         if (signal.aborted) return;
       }
 

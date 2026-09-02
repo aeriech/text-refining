@@ -25,7 +25,7 @@ export default function RefinePanel() {
   const [error, setError] = useState<string | null>(null);
   const [streaming, setStreaming] = useState(false);
 
-  const { copied, copy } = useClipboard();
+  const { copied, failed: copyFailed, copy } = useClipboard();
   const abortRef = useRef<AbortController | null>(null);
 
   const handleEvent = useCallback((ev: SSEEvent) => {
@@ -128,6 +128,7 @@ export default function RefinePanel() {
           attribution={attribution}
           error={error}
           copied={copied}
+          copyFailed={copyFailed}
           onCopy={onCopy}
         />
       </div>

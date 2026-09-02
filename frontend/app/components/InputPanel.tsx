@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import ToneSlider from "./ToneSlider";
 
 interface InputPanelProps {
@@ -33,6 +33,14 @@ function InputPanel({
 }: InputPanelProps) {
   const canSubmit = text.trim().length > 0 && !streaming;
 
+  /* Resolved after mount: the modifier glyph depends on the OS, and rendering
+     a guess on the server would either flash the wrong key or break hydration. */
+  const [modifier, setModifier] = useState<string | null>(null);
+  useEffect(() => {
+    const apple = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+    setModifier(apple ? "⌘" : "Ctrl");
+  }, []);
+
   return (
     <div className="rounded-panel border border-border bg-panel p-6 transition-colors">
       <label className="block text-sm font-medium text-text-secondary tracking-wide mb-2" htmlFor="input">
@@ -44,6 +52,14 @@ function InputPanel({
         value={text}
         disabled={disabled}
         onChange={(e) => onTextChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && canSubmit) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
+        aria-describedby="submit-hint"
+        aria-keyshortcuts="Meta+Enter Control+Enter"
         className="w-full min-h-[160px] resize-y rounded-control border border-border-strong bg-panel-2 p-3 text-sm text-text leading-relaxed caret-accent outline-none transition-all duration-fast ease-out placeholder:text-text-tertiary focus:border-accent focus:ring-2 focus:ring-accent/30 disabled:opacity-60"
       />
 
@@ -68,7 +84,7 @@ function InputPanel({
         />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
         {!streaming ? (
           <button
             onClick={onSubmit}
@@ -85,6 +101,9 @@ function InputPanel({
             Stop
           </button>
         )}
+        <span id="submit-hint" className="text-label text-text-tertiary">
+          {modifier ? `${modifier} + Enter to refine` : " "}
+        </span>
       </div>
     </div>
   );

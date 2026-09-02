@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-02T15:22:38.161Z",
+  "generatedAt": "2026-09-02T16:00:20.740Z",
   "title": "Design System: Refine Text",
   "extensions": {
     "colorMeta": {
@@ -347,10 +347,18 @@
       "unbordered": "2px solid Signal Periwinkle ring at 2px offset from the panel. Solid, not 30%: at 30% opacity a ring measures 1.52:1 and is not an indicator.",
       "trigger": ":focus-visible only, so pointer users never see it."
     },
+    "announcementModel": {
+      "politeRegions": 1,
+      "detail": "Exactly one invisible polite live region per surface, reporting milestones (refining started; result ready with length and model) rather than narrating the stream. Announcing per token mutates the region dozens of times and buries the user in partial sentences. The visible progress note is not a live region — a second polite region would queue against the first.",
+      "alerts": "role=alert is reserved for failures that must interrupt: a terminal stream error and a clipboard failure.",
+      "resultSurface": "A named region labelled by 'Refined output', so AT navigates to the text on demand instead of receiving it as narration.",
+      "keyboard": "Cmd/Ctrl+Enter commits from the textarea, declared via aria-keyshortcuts and shown as a Label-tier hint. The modifier glyph resolves after mount because it is OS-dependent."
+    },
+    "semanticBorderPolicy": "Match the measured ratio (~3:1), not the opacity percentage. Coral is lighter than periwinkle, so equal alpha reads unequal: accent/70 = 3.09:1, danger/60 = 3.12:1.",
     "contrastNotes": {
       "tonalSteps": "Surface steps measure ~1.07-1.10:1 against each other. They group and set mood; they do not delineate. Any boundary a user must find is carried by a border.",
       "operableEdge": "Interactive hairline #5b6782 measures 3.01:1 vs the well and 3.27:1 vs the panel. Decorative hairline #252a35 stays at 1.29:1 by choice.",
-      "semanticWashes": "10% washes measure ~1.12:1 against the panel; the notes are legible through their text colour, and their borders were raised to 60% (3.01:1) where the surface is operable."
+      "semanticWashes": "10% washes measure ~1.12:1 against the panel; the notes are legible through their text colour. Borders are tuned to equal perceived weight rather than equal alpha (accent/70 3.09:1, danger/60 3.12:1). A note's border is decorative, so 1.4.11 does not apply to it — the consistency is a craft decision, not an access requirement."
     },
     "reservedTokens": [
       {
@@ -377,6 +385,22 @@
     "statelessByDesign": "Status Note, Error Note and Tray Panel carry no interactive state rules. That is the shipped truth, not an omission: notes are transient read-only reports and the tray is a container. The tray does declare a colour transition in source, so the snippet mirrors it. Do not add hover affordances to non-interactive surfaces.",
     "knownDefects": [],
     "resolved": [
+      {
+        "area": "a11y",
+        "detail": "Live regions consolidated from three polite + one alert to one polite announcer + two alerts; result surface is now a named region."
+      },
+      {
+        "area": "a11y",
+        "detail": "Cmd/Ctrl+Enter commit added with aria-keyshortcuts and a visible hint."
+      },
+      {
+        "area": "integrity",
+        "detail": "Clipboard failure is surfaced with a recovery; execCommand's return value is honoured."
+      },
+      {
+        "area": "perf",
+        "detail": "Abortable sleep() removes its listener on every exit path; the retry loop no longer leaks one per model."
+      },
       {
         "area": "focus",
         "detail": "All five controls now carry :focus-visible treatments per the two-form focus standard."
@@ -466,7 +490,15 @@
       "refersTo": "note-status",
       "description": "How the machine narrates itself — 'Refining…', a model switch, 'Cancelled.'. A 10% periwinkle wash with a 40% border, same shape as the error note because degradation and failure are the same kind of message.",
       "html": "<div class=\"ds-note-status\">Model gemini-2.5-flash hit its quota — switching…</div>",
-      "css": ".ds-note-status{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-accent, #5b7cfa);background:var(--color-accent-bg, rgba(91,124,250,.1));border:1px solid rgba(91,124,250,.4);border-radius:12px;padding:12px;max-width:380px}"
+      "css": ".ds-note-status{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-accent, #5b7cfa);background:var(--color-accent-bg, rgba(91,124,250,.1));border:1px solid rgba(91,124,250,.7);border-radius:12px;padding:12px;max-width:380px}"
+    },
+    {
+      "name": "Clipboard Failure Note",
+      "kind": "custom",
+      "refersTo": "note-error",
+      "description": "The clipboard is this product's exit path, so a failed copy is reported rather than swallowed. Same coral form as a stream error, and it names the recovery instead of just the problem.",
+      "html": "<div class=\"ds-note-error\" role=\"alert\">Couldn’t reach your clipboard. Select the text above and copy it manually.</div>",
+      "css": ".ds-note-error{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-danger, #f87171);background:var(--color-danger-bg, rgba(248,113,113,.1));border:1px solid rgba(248,113,113,.6);border-radius:12px;padding:12px;max-width:380px}"
     },
     {
       "name": "Error Note",
@@ -487,7 +519,7 @@
       "Monospace reserved strictly for numerals; prose is never monospace.",
       "Radius shrinks inward (16 → 12 → 6px), so controls read as recessed, not stacked.",
       "Two equal trays: input and output are siblings of identical weight, never primary and secondary.",
-      "Failure and degradation are shown in their own color, in the user's own words."
+      "Failure and degradation are shown in their own color, in the user's own words — including failures of the surrounding system, like the clipboard."
     ],
     "rules": [
       {
@@ -593,7 +625,9 @@
       "**Do** give every new interactive control the focus standard — border-shift-plus-halo where there is a border, a 2px solid periwinkle ring at 2px offset where there is not — as `:focus-visible`, with the native outline suppressed only because it is being replaced.",
       "**Do** put the interactive hairline (`#5b6782`) on anything operable and the quiet hairline (`#252a35`) on anything decorative. Audit test: if a user has to find the edge, it needs 3:1.",
       "**Do** give any looping animation a reduced-motion alternative that *keeps the signal* and drops only the movement.",
-      "**Do** announce anything that arrives without a click: streamed output as a polite live region, errors as `role=\"alert\"`.",
+      "**Do** keep exactly one polite live region per surface, reporting milestones rather than narrating a stream, and reserve `role=\"alert\"` for failures that must interrupt.",
+      "**Do** report a failed side effect. A silent failure on the clipboard — this product's exit path — costs the user the entire result.",
+      "**Do** match a semantic border on its measured ratio (~3:1), not on its opacity percentage. Equal alpha across different hues reads as unequal weight.",
       "**Do** set `tabular-nums` on any number that changes while the user is watching.",
       "**Do** add positive letter-spacing (`0.025em`) to 14px text that labels something, and none to 14px text that is content.",
       "**Do** reserve the destination before content arrives — matched minimum heights, so streaming never reflows the page.",
@@ -613,6 +647,9 @@
       "**Don't** use a 30%-opacity ring as a control's only focus indicator; at that opacity it measures 1.52:1 and is decoration.",
       "**Don't** lean on a tonal step to make a boundary findable. The steps measure ~1.09:1 — they group, they do not delineate.",
       "**Don't** kill animation wholesale under `prefers-reduced-motion`. Replace the motion, keep the meaning.",
+      "**Don't** stack polite live regions. Two that update during the same operation queue against each other and the user hears neither cleanly.",
+      "**Don't** put a live region on streaming text. Announce that the result is ready and let the reader navigate to it.",
+      "**Don't** trust `document.execCommand(\"copy\")` without reading its return value; it reports failure by returning false, not by throwing.",
       "**Don't** stack two state changes on one interaction, and don't replace the caret's stepped blink with a smooth pulse.",
       "**Don't** use `#000` or `#fff` anywhere. Both ends of the range stay pulled inward.",
       "**Don't** let a declared token sit unreferenced in `globals.css`. Tokens that generate no utility (the former `--space-*` block) are a second source of truth that will drift; either wire them up or delete them."
