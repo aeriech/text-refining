@@ -2,20 +2,35 @@ import { ChatSession, GoogleGenerativeAI } from "@google/generative-ai";
 
 type SSEEvent =
   | { readonly type: "chunk"; text: string }
+  | { readonly type: "reset"; ok: boolean }
   | { readonly type: "status"; message: string }
+  | { readonly type: "attribution"; message: string }
   | { readonly type: "done"; ok: boolean }
-  | { readonly type: "error"; message: string }
-  | { readonly type: "completed" }
-  | { readonly type: "aborted" };
+  | { readonly type: "error"; message: string };
 
+// Ordered by measured health, fastest-working first, because every model that
+// fails costs its own latency plus a backoff before the next one is tried.
+// Probed 2026-09-02 against a free-tier key:
+//   gemini-2.5-flash          200, ~7s   <- pinned, healthy
+//   gemini-flash-lite-latest  200, ~22s  <- works, slow
+//   gemini-flash-latest       503        <- alias, transient high demand
+//   gemini-2.5-flash-lite     404        <- "no longer available to new users"
+//   gemini-2.5-pro            404        <- "no longer available to new users"
+// The two 404s are kept as trailing fallbacks: they are an access restriction
+// on newer keys, not a removed endpoint, so a self-hosted older key may still
+// reach them. gemini-1.5-flash was dropped — it is not served on the v1beta
+// path this SDK uses, so it can never succeed here.
 const FREE_TIER_MODELS = [
-  "gemini-flash-latest",
-  "gemini-flash-lite-latest",
   "gemini-2.5-flash",
+  "gemini-flash-lite-latest",
+  "gemini-flash-latest",
   "gemini-2.5-flash-lite",
   "gemini-2.5-pro",
-  "gemini-1.5-flash",
 ] as const;
+
+// The default serverless limit (10s) is not enough to survive one failed
+// model plus a backoff plus a real generation. Hobby plans allow up to 60s.
+export const maxDuration = 60;
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -98,6 +113,9 @@ async function* runStreamWithFallback(
   for (let modelIdx = 0; modelIdx < FREE_TIER_MODELS.length; modelIdx++) {
     const model = FREE_TIER_MODELS[modelIdx];
     let session: ChatSession | null = null;
+    // Hoisted so the catch block knows whether this model already sent text
+    // to the client before it failed.
+    let streamed = false;
 
     try {
       if (modelIdx > 0) {
@@ -109,10 +127,7 @@ async function* runStreamWithFallback(
             reject(new Error("aborted"));
           }, { once: true });
         });
-        if (signal.aborted) {
-          yield { type: "aborted" };
-          return;
-        }
+        if (signal.aborted) return;
       }
 
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY!);
@@ -125,14 +140,9 @@ async function* runStreamWithFallback(
 
       const { stream } = await session.sendMessageStream(promptText);
 
-      let streamed = false;
-
       try {
         for await (const chunk of stream) {
-          if (signal.aborted) {
-            yield { type: "aborted" };
-            return;
-          }
+          if (signal.aborted) return;
           const text = chunk.text();
           if (!text) continue;
           streamed = true;
@@ -143,9 +153,11 @@ async function* runStreamWithFallback(
       }
 
       if (streamed) {
-        yield { type: "status", message: `via ${model}` };
+        // Attribution is its own event, not a `status`: `done` clears the
+        // transient progress message, and previously wiped this in the same
+        // tick so the user never saw which model produced the result.
+        yield { type: "attribution", message: `via ${model}` };
         yield { type: "done", ok: true };
-        yield { type: "completed" };
         return;
       }
 
@@ -153,12 +165,14 @@ async function* runStreamWithFallback(
         type: "error",
         message: `Model ${model} returned no content.`,
       };
-      yield { type: "completed" };
       return;
     } catch (err) {
-      if (signal.aborted) {
-        yield { type: "aborted" };
-        return;
+      if (signal.aborted) return;
+
+      // This model already streamed text, so the client is holding a partial
+      // sentence. Tell it to drop that before the next model appends to it.
+      if (streamed) {
+        yield { type: "reset", ok: true };
       }
 
       yield {
@@ -171,7 +185,6 @@ async function* runStreamWithFallback(
           type: "error",
           message: "All available AI models failed to process the request. Please try again.",
         };
-        yield { type: "completed" };
         return;
       }
 
@@ -183,17 +196,6 @@ async function* runStreamWithFallback(
 }
 
 export async function POST(request: Request) {
-  let signal: AbortSignal;
-
-  try {
-    signal = request.signal;
-  } catch {
-    return new Response(JSON.stringify({ error: "invalid request" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
   let body: { text: string; formality: number; friendliness: number };
   try {
     body = (await request.json()) as typeof body;
@@ -229,22 +231,31 @@ export async function POST(request: Request) {
     );
   }
 
+  // Own an abort controller: `request.signal` is an AbortSignal, so the old
+  // `signal.abort()` cast threw a TypeError and the abort never propagated —
+  // Gemini kept generating, and billing free-tier quota, after the user had
+  // pressed Stop. Both the request signal and the stream's own cancel()
+  // (which fires when the client disconnects) feed this controller.
+  const abortStream = new AbortController();
+  const onRequestAbort = () => abortStream.abort();
+  if (request.signal.aborted) abortStream.abort();
+  else request.signal.addEventListener("abort", onRequestAbort, { once: true });
+
   const streamGen = runStreamWithFallback(
     body.text,
     formality,
     friendliness,
-    signal
+    abortStream.signal
   );
 
   const encoder = new TextEncoder();
 
-  const abortable = signal as AbortSignal & { abort: () => void };
   const bodyStream = new ReadableStream({
-    async pull(controller) {
+    async pull(streamController) {
       try {
         const { value, done } = await streamGen.next();
         if (done) {
-          controller.close();
+          streamController.close();
           return;
         }
 
@@ -252,13 +263,16 @@ export async function POST(request: Request) {
         const payload = encoder.encode(
           `event: ${ev.type}\ndata: ${JSON.stringify(ev)}\n\n`
         );
-        controller.enqueue(payload);
+        streamController.enqueue(payload);
       } catch {
-        controller.close();
+        streamController.close();
       }
     },
-    cancel() {
-      abortable.abort();
+    async cancel() {
+      abortStream.abort();
+      request.signal.removeEventListener("abort", onRequestAbort);
+      // Let the generator run its finally blocks and release the session.
+      await streamGen.return(undefined as never);
     },
   });
 

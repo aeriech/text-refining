@@ -1,0 +1,621 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-02T15:22:38.161Z",
+  "title": "Design System: Refine Text",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Instrument Black",
+        "canonical": "oklch(14.0% 0.0069 269.7)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#242528",
+          "#404246",
+          "#606165",
+          "#818287",
+          "#a3a5a9",
+          "#c7c9ce",
+          "#eceef3"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Tray",
+        "canonical": "oklch(18.7% 0.0107 268.1)",
+        "tonalRamp": [
+          "#090b10",
+          "#23252a",
+          "#3f4248",
+          "#5e6168",
+          "#7f8289",
+          "#a2a5ac",
+          "#c6c9d0",
+          "#ebeef6"
+        ]
+      },
+      "panel-2": {
+        "role": "neutral",
+        "displayName": "Well",
+        "canonical": "oklch(22.6% 0.0167 264.2)",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3d424b",
+          "#5c616b",
+          "#7d828d",
+          "#a0a5b0",
+          "#c4c9d4",
+          "#e9effa"
+        ]
+      },
+      "panel-3": {
+        "role": "neutral",
+        "displayName": "Well Raised",
+        "canonical": "oklch(26.0% 0.0202 264.1)",
+        "tonalRamp": [
+          "#070b14",
+          "#20252f",
+          "#3d424d",
+          "#5b616d",
+          "#7c828f",
+          "#9fa5b2",
+          "#c2c9d7",
+          "#e8effd"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(28.5% 0.0215 265.8)",
+        "tonalRamp": [
+          "#070b14",
+          "#202530",
+          "#3d424e",
+          "#5b616e",
+          "#7c8290",
+          "#9fa5b3",
+          "#c2c9d8",
+          "#e8effe"
+        ]
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Interactive",
+        "canonical": "oklch(51.4% 0.0454 266.1)",
+        "tonalRamp": [
+          "#04091e",
+          "#1b243b",
+          "#37425b",
+          "#55617c",
+          "#76829e",
+          "#98a5c2",
+          "#bbc9e8",
+          "#e7efff"
+        ]
+      },
+      "border-subtle": {
+        "role": "neutral",
+        "displayName": "Hairline Recessed",
+        "canonical": "oklch(24.8% 0.0200 267.9)",
+        "tonalRamp": [
+          "#080b14",
+          "#21252f",
+          "#3d424d",
+          "#5c616d",
+          "#7d828f",
+          "#9fa5b2",
+          "#c3c9d7",
+          "#e9eefc"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Primary Text",
+        "canonical": "oklch(94.9% 0.0058 264.5)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#242528",
+          "#404245",
+          "#5f6165",
+          "#808286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#eceef2"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Secondary Text",
+        "canonical": "oklch(78.5% 0.0165 266.3)",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3e424b",
+          "#5d616b",
+          "#7e828d",
+          "#a0a5b0",
+          "#c4c9d4",
+          "#e9eefa"
+        ]
+      },
+      "text-tertiary": {
+        "role": "neutral",
+        "displayName": "Tertiary Text",
+        "canonical": "oklch(65.7% 0.0247 269.3)",
+        "tonalRamp": [
+          "#070b16",
+          "#202531",
+          "#3d4250",
+          "#5b6170",
+          "#7c8292",
+          "#9fa5b5",
+          "#c2c9da",
+          "#e8eeff"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Periwinkle",
+        "canonical": "oklch(62.7% 0.1910 269.2)",
+        "tonalRamp": [
+          "#030034",
+          "#0f0078",
+          "#1f2ba5",
+          "#3851cb",
+          "#5576f3",
+          "#819fff",
+          "#b4c8ff",
+          "#e8eeff"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Signal Periwinkle Bright",
+        "canonical": "oklch(70.0% 0.1567 271.0)",
+        "tonalRamp": [
+          "#040034",
+          "#120b6f",
+          "#273393",
+          "#4256b9",
+          "#6179df",
+          "#849eff",
+          "#b5c7ff",
+          "#e8eeff"
+        ]
+      },
+      "accent-2": {
+        "role": "tertiary",
+        "displayName": "Confirm Green",
+        "canonical": "oklch(77.3% 0.1535 163.2)",
+        "tonalRamp": [
+          "#000f07",
+          "#002d1d",
+          "#004f35",
+          "#007350",
+          "#009a6c",
+          "#0ec289",
+          "#51e8ad",
+          "#c1ffe0"
+        ]
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Alert Coral",
+        "canonical": "oklch(71.1% 0.1661 22.2)",
+        "tonalRamp": [
+          "#1f0002",
+          "#4d000a",
+          "#800018",
+          "#ac2933",
+          "#d35053",
+          "#fc7474",
+          "#ffb2ae",
+          "#ffe8e7"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Quota Amber",
+        "canonical": "oklch(83.7% 0.1644 84.4)",
+        "tonalRamp": [
+          "#110a00",
+          "#312200",
+          "#553e00",
+          "#7c5b00",
+          "#a57b00",
+          "#d09c00",
+          "#fbbf23",
+          "#ffecc8"
+        ]
+      },
+      "accent-bg": {
+        "role": "primary",
+        "displayName": "Signal Wash",
+        "canonical": "rgba(91, 124, 250, 0.10)",
+        "derivedFrom": "accent",
+        "note": "10% wash of its base color; no tonal ramp — opacity is the point."
+      },
+      "danger-bg": {
+        "role": "secondary",
+        "displayName": "Alert Wash",
+        "canonical": "rgba(248, 113, 113, 0.10)",
+        "derivedFrom": "danger",
+        "note": "10% wash of its base color; no tonal ramp — opacity is the point."
+      },
+      "warning-bg": {
+        "role": "tertiary",
+        "displayName": "Quota Wash",
+        "canonical": "rgba(251, 191, 36, 0.10)",
+        "derivedFrom": "warning",
+        "note": "10% wash of its base color; no tonal ramp — opacity is the point."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The product name, once, at the top of the page. Nothing else uses this size."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel labels, slider names, and button labels. Positive tracking at 14px is what separates a label from prose."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "The user's draft, the refined result, the subtitle, status and error text. 1.625 line-height because this is text read carefully before sending."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Slider end markers and the character count. Text that orients rather than informs."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Tone scores and character counts. Monospace with tabular figures so a value cannot reflow while the user drags."
+      }
+    },
+    "shadows": [],
+    "shadowPolicy": "No shadow tokens exist. Depth is tonal: page #08090c -> panel #111318 -> well #181c24 -> reserved #1f242e, with a 1px border at every boundary. A shadow is permitted only as a response to state (hover, focus, overlay), never to establish resting hierarchy, and only as a named token with a stated trigger.",
+    "motion": [
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "The only duration used in the shipped UI. All state feedback runs here."
+      },
+      {
+        "name": "duration-normal",
+        "value": "200ms",
+        "purpose": "Declared and reserved for entrances; not an alternative for state feedback."
+      },
+      {
+        "name": "duration-slow",
+        "value": "300ms",
+        "purpose": "Declared and reserved for larger movements; currently unexercised."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The system's state-change easing. Fast departure, long settle."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Declared and reserved for symmetric movement; currently unexercised."
+      },
+      {
+        "name": "animate-caret",
+        "value": "blink 1s steps(2, start) infinite",
+        "purpose": "The streaming caret. Stepped, not eased — it must read as a terminal cursor, not a soft UI pulse."
+      },
+      {
+        "name": "press-scale",
+        "value": "scale(0.98)",
+        "purpose": "The universal active-state press. The whole of the system's tactile vocabulary."
+      },
+      {
+        "name": "hover-lift",
+        "value": "brightness(1.1)",
+        "purpose": "Primary button hover. Reserved token accent-hover (#7b96ff) exists to state this as a color instead of a filter."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Vertical page padding opens from 48px to 64px; action buttons go from full-width to auto-width."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "purpose": "The two trays go from stacked to side by side. The single structural breakpoint."
+      }
+    ],
+    "radiusTokens": {
+      "panel": "--radius-panel 16px",
+      "control": "--radius-control 12px",
+      "badge": "--radius-badge 6px",
+      "note": "The documented ladder is now enforceable in code; values match the Tailwind steps they replaced, so nothing shifted visually."
+    },
+    "layout": {
+      "maxWidth": "880px",
+      "gutter": "24px",
+      "panelPadding": "24px",
+      "reservedBodyHeight": "160px",
+      "note": "One centered column, no navigation, no footer. The nine-step spacing scale is declared in globals.css and never referenced directly, but every shipped spacing value lands on a step of it; practice leans on steps 2, 3, 5 and 6 (8, 12, 24, 32px)."
+    },
+    "focusStandard": {
+      "bordered": "Border shifts to Signal Periwinkle plus a 2px 30%-opacity halo. Border measures 4.64:1 vs the well, 5.05:1 vs the panel — the border is the indicator, the halo is reinforcement.",
+      "unbordered": "2px solid Signal Periwinkle ring at 2px offset from the panel. Solid, not 30%: at 30% opacity a ring measures 1.52:1 and is not an indicator.",
+      "trigger": ":focus-visible only, so pointer users never see it."
+    },
+    "contrastNotes": {
+      "tonalSteps": "Surface steps measure ~1.07-1.10:1 against each other. They group and set mood; they do not delineate. Any boundary a user must find is carried by a border.",
+      "operableEdge": "Interactive hairline #5b6782 measures 3.01:1 vs the well and 3.27:1 vs the panel. Decorative hairline #252a35 stays at 1.29:1 by choice.",
+      "semanticWashes": "10% washes measure ~1.12:1 against the panel; the notes are legible through their text colour, and their borders were raised to 60% (3.01:1) where the surface is operable."
+    },
+    "reservedTokens": [
+      {
+        "token": "colors.panel-3",
+        "role": "Fourth tonal step for a surface nested inside a well (hovered row, selected item). Use before introducing a shadow."
+      },
+      {
+        "token": "colors.accent-hover",
+        "role": "Explicit hover fill for the primary button, replacing the brightness filter."
+      },
+      {
+        "token": "colors.accent-2",
+        "role": "SPENT — the attribution line's completion dot. No longer free."
+      },
+      {
+        "token": "colors.warning",
+        "role": "Degradation that is not failure — free-tier quota pressure, a fallback in progress. The product has a permanent need for this state."
+      },
+      {
+        "token": "motion.ease-in-out / duration-normal / duration-slow",
+        "role": "Entrances and larger movements. Not alternatives for state feedback. (ease-spring was deleted: it was unreferenced and its overshoot contradicted The Single Response Rule.)"
+      }
+    ],
+    "statelessByDesign": "Status Note, Error Note and Tray Panel carry no interactive state rules. That is the shipped truth, not an omission: notes are transient read-only reports and the tray is a container. The tray does declare a colour transition in source, so the snippet mirrors it. Do not add hover affordances to non-interactive surfaces.",
+    "knownDefects": [],
+    "resolved": [
+      {
+        "area": "focus",
+        "detail": "All five controls now carry :focus-visible treatments per the two-form focus standard."
+      },
+      {
+        "area": "motion",
+        "detail": "The caret holds solid under prefers-reduced-motion; no blanket animation kill."
+      },
+      {
+        "area": "contrast",
+        "detail": "Interactive borders raised to >=3:1; tertiary text raised from #6e7382 (3.61:1) to #8b91a1 (5.41:1)."
+      },
+      {
+        "area": "a11y",
+        "detail": "Output is a polite live region, errors are role=alert, sliders expose aria-valuetext, <main> landmark added."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Tray Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The base container for both halves of the tool. Flat at rest, one tonal step above the page, outlined with the standard hairline.",
+      "html": "<div class=\"ds-tray\"><span class=\"ds-tray-label\">Your message</span><p class=\"ds-tray-body\">A tray is flat at rest. Its depth comes from being one tonal step lighter than the page, plus a single hairline border.</p></div>",
+      "css": ".ds-tray{background:var(--color-panel, #111318);border:1px solid var(--color-border, #252a35);border-radius:16px;padding:24px;font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);max-width:380px;transition:border-color var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),background-color var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1))}\n.ds-tray-label{display:block;font-size:.875rem;font-weight:500;letter-spacing:.025em;color:var(--color-text-secondary, #b4b9c4);margin-bottom:8px}\n.ds-tray-body{margin:0;font-size:.875rem;line-height:1.625;color:var(--color-text, #eceef2)}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single commit action. Solid Signal Periwinkle with dark text — an indicator lamp, not a generic CTA. Hover brightens 10%; press drops to 98%.",
+      "html": "<button class=\"ds-btn-primary\">Refine</button>",
+      "css": ".ds-btn-primary{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;font-weight:600;letter-spacing:.025em;background:var(--color-accent, #5b7cfa);color:var(--color-bg, #08090c);border:none;border-radius:12px;padding:12px 16px;cursor:pointer;transition:filter var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),transform var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1))}\n.ds-btn-primary:hover{filter:brightness(1.1)}\n.ds-btn-primary:active{transform:scale(.98)}\n.ds-btn-primary:focus-visible{outline:none;box-shadow:0 0 0 2px var(--color-panel, #111318),0 0 0 4px var(--color-accent, #5b7cfa)}\n.ds-btn-primary:disabled{opacity:.5;cursor:not-allowed;filter:none}"
+    },
+    {
+      "name": "Stop Button",
+      "kind": "button",
+      "refersTo": "button-stop",
+      "description": "Replaces the primary button in place while a stream runs. Coral text on a 10% coral wash — a failure or interruption is reported, never shouted.",
+      "html": "<button class=\"ds-btn-stop\">Stop</button>",
+      "css": ".ds-btn-stop{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;font-weight:600;letter-spacing:.025em;background:var(--color-danger-bg, rgba(248,113,113,.1));color:var(--color-danger, #f87171);border:1px solid rgba(248,113,113,.6);border-radius:12px;padding:12px 16px;cursor:pointer;transition:background var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),transform var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1))}\n.ds-btn-stop:hover{background:rgba(248,113,113,.2)}\n.ds-btn-stop:active{transform:scale(.98)}\n.ds-btn-stop:focus-visible{outline:none;box-shadow:0 0 0 2px var(--color-panel, #111318),0 0 0 4px var(--color-accent, #5b7cfa)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action (Copy). Well-toned fill with a hairline; hover shifts border and text to periwinkle while the background stays put.",
+      "html": "<button class=\"ds-btn-ghost\">Copy</button>",
+      "css": ".ds-btn-ghost{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;font-weight:600;letter-spacing:.025em;background:var(--color-panel-2, #181c24);color:var(--color-text, #eceef2);border:1px solid var(--color-border-strong, #5b6782);border-radius:12px;padding:12px 16px;cursor:pointer;transition:border-color var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),color var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),transform var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1))}\n.ds-btn-ghost:hover{border-color:var(--color-accent, #5b7cfa);color:var(--color-accent, #5b7cfa)}\n.ds-btn-ghost:active{transform:scale(.98)}\n.ds-btn-ghost:focus-visible{outline:none;box-shadow:0 0 0 2px var(--color-panel, #111318),0 0 0 4px var(--color-accent, #5b7cfa)}\n.ds-btn-ghost:disabled{opacity:.5;cursor:not-allowed;border-color:var(--color-border-strong, #5b6782);color:var(--color-text, #eceef2)}"
+    },
+    {
+      "name": "Draft Textarea",
+      "kind": "input",
+      "refersTo": "input-textarea",
+      "description": "Where the user's rough draft goes. Recessed well surface, 160px minimum. Carries the system's focus standard: periwinkle border plus a 2px 30%-opacity halo.",
+      "html": "<textarea class=\"ds-input-draft\" placeholder=\"e.g. hey can u send me the doc asap thx\"></textarea>",
+      "css": ".ds-input-draft{display:block;width:100%;box-sizing:border-box;min-height:160px;resize:vertical;font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-text, #eceef2);caret-color:var(--color-accent, #5b7cfa);background:var(--color-panel-2, #181c24);border:1px solid var(--color-border-strong, #5b6782);border-radius:12px;padding:12px;outline:none;transition:border-color var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),box-shadow var(--duration-fast, 150ms) var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1))}\n.ds-input-draft::placeholder{color:var(--color-text-tertiary, #6e7382)}\n.ds-input-draft:focus{border-color:var(--color-accent, #5b7cfa);box-shadow:0 0 0 2px rgba(91,124,250,.3)}\n.ds-input-draft:disabled{opacity:.6}"
+    },
+    {
+      "name": "Output Well with Streaming Caret",
+      "kind": "custom",
+      "refersTo": "output-well",
+      "description": "The signature element. A recessed reading surface whose blinking 8px periwinkle block is the visible proof that the result is arriving live. Stepped blink, not a smooth pulse — it should read as a terminal cursor.",
+      "html": "<div class=\"ds-output-well\">Could you send over the document when you get a chance<span class=\"ds-caret\"></span></div>",
+      "css": ".ds-output-well{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-text, #eceef2);background:var(--color-panel-2, #181c24);border:1px solid var(--color-border-subtle, #1d212b);border-radius:12px;padding:12px;min-height:160px;max-width:380px;box-sizing:border-box;white-space:pre-wrap;overflow-wrap:break-word}\n.ds-caret{display:inline-block;width:8px;height:1.1em;margin-left:2px;vertical-align:text-bottom;background:var(--color-accent, #5b7cfa);animation:ds-blink 1s steps(2,start) infinite}\n@keyframes ds-blink{to{opacity:0}}\n@media (prefers-reduced-motion:reduce){.ds-caret{animation:none;opacity:1}}"
+    },
+    {
+      "name": "Tone Slider",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The product's most characteristic control: a native range input framed by a Title-tier name, a monospace tabular score badge, and three 11px markers whose centre one is live periwinkle output that changes as you drag.",
+      "html": "<div class=\"ds-slider\"><div class=\"ds-slider-head\"><span class=\"ds-slider-name\">Formality</span><span class=\"ds-slider-score\">5</span></div><input class=\"ds-slider-range\" type=\"range\" min=\"1\" max=\"10\" value=\"5\" aria-label=\"Formality: Balanced\"><div class=\"ds-slider-foot\"><span>Casual</span><span class=\"ds-slider-active\">Balanced</span><span>Formal</span></div></div>",
+      "css": ".ds-slider{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);max-width:340px;display:flex;flex-direction:column;gap:8px}\n.ds-slider-head{display:flex;align-items:center;justify-content:space-between}\n.ds-slider-name{font-size:.875rem;font-weight:500;letter-spacing:.025em;color:var(--color-text-secondary, #b4b9c4)}\n.ds-slider-score{font-family:var(--font-mono, ui-monospace, \"SF Mono\", \"Fira Code\", Menlo, Consolas, monospace);font-size:.75rem;font-variant-numeric:tabular-nums;color:var(--color-text, #eceef2);background:var(--color-panel-2, #181c24);border:1px solid var(--color-border, #252a35);border-radius:6px;padding:4px 8px;min-width:34px;text-align:center}\n.ds-slider-range{width:100%;accent-color:var(--color-accent, #5b7cfa);cursor:pointer}\n.ds-slider-range:focus-visible{border-radius:12px;outline:none;box-shadow:0 0 0 2px var(--color-panel, #111318),0 0 0 4px var(--color-accent, #5b7cfa)}\n.ds-slider-foot{display:flex;justify-content:space-between;font-size:.6875rem;color:var(--color-text-tertiary, #6e7382)}\n.ds-slider-active{color:var(--color-accent, #5b7cfa);font-weight:500}"
+    },
+    {
+      "name": "Attribution Line",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The terminal completion signal. A Label-tier monospace line with a 6px Confirm Green dot, reporting which model produced the result. No wash, no border — a success needs acknowledging, not announcing, and this is the system's only use of green.",
+      "html": "<div class=\"ds-attribution\"><span class=\"ds-attribution-dot\"></span>via gemini-2.5-flash</div>",
+      "css": ".ds-attribution{display:flex;align-items:center;gap:8px;font-family:var(--font-mono, ui-monospace, \"SF Mono\", \"Fira Code\", Menlo, Consolas, monospace);font-size:.6875rem;color:var(--color-text-tertiary, #8b91a1)}\n.ds-attribution-dot{display:inline-block;width:6px;height:6px;border-radius:9999px;background:var(--color-accent-2, #34d399)}"
+    },
+    {
+      "name": "Status Note",
+      "kind": "custom",
+      "refersTo": "note-status",
+      "description": "How the machine narrates itself — 'Refining…', a model switch, 'Cancelled.'. A 10% periwinkle wash with a 40% border, same shape as the error note because degradation and failure are the same kind of message.",
+      "html": "<div class=\"ds-note-status\">Model gemini-2.5-flash hit its quota — switching…</div>",
+      "css": ".ds-note-status{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-accent, #5b7cfa);background:var(--color-accent-bg, rgba(91,124,250,.1));border:1px solid rgba(91,124,250,.4);border-radius:12px;padding:12px;max-width:380px}"
+    },
+    {
+      "name": "Error Note",
+      "kind": "custom",
+      "refersTo": "note-error",
+      "description": "Terminal failure, in the user's own words. Identical geometry to the status note, differing only in semantic color.",
+      "html": "<div class=\"ds-note-error\">All available AI models failed to process the request. Please try again.</div>",
+      "css": ".ds-note-error{font-family:var(--font-sans, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif);font-size:.875rem;line-height:1.625;color:var(--color-danger, #f87171);background:var(--color-danger-bg, rgba(248,113,113,.1));border:1px solid rgba(248,113,113,.6);border-radius:12px;padding:12px;max-width:380px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Instrument",
+    "overview": "Refine Text looks like a precise tool that has decided not to talk about itself. The field is a near-black neutral that runs almost the entire surface, broken only by hairline borders and two flat trays sitting side by side. Nothing is styled to attract attention. There is exactly one chromatic voice in the whole system — a periwinkle blue — and it never appears as decoration. It appears where the machine is doing something: the caret advancing through the streamed result, the border of the field you are typing into, the fill of the button that commits the work, the tint behind a status line explaining a model switch. When nothing is happening, the interface is monochrome. That contrast is the entire personality.\n\nThe density is calm rather than sparse. Panels carry generous 24px interiors and a 24px gutter between them, and the page is capped at 880px so both trays stay readable side by side rather than stretching. Type is deliberately flat in scale: one 30px name at the top, then everything else at 14px or smaller. There is no secondary heading tier, because there is nothing to navigate — the whole product is one screen with two halves. Hierarchy is carried by tonal steps and label weight instead of size, which is why the system can be this quiet and still be legible.\n\nDepth is achieved without a single shadow. Three surface tones stack in a fixed ladder — page, panel, well — each about four percent lighter than the last, with a 1px border drawn at every boundary. Corners soften as you move outward and tighten as you move inward, so a control never looks like it is floating on top of its container; it looks recessed into it. Confirmed rejections: no light mode and no theme toggle (the dark field is a binding product constraint), no shadow at rest, and no decorative use of the accent.",
+    "keyCharacteristics": [
+      "One accent, used only as a signal of system activity — never as ornament.",
+      "Flat at rest: depth from a three-step tonal ladder plus hairline borders, not elevation — with contrast spent on operable edges, not on mood.",
+      "A compressed type scale — a single 30px display, then 14px and below.",
+      "Monospace reserved strictly for numerals; prose is never monospace.",
+      "Radius shrinks inward (16 → 12 → 6px), so controls read as recessed, not stacked.",
+      "Two equal trays: input and output are siblings of identical weight, never primary and secondary.",
+      "Failure and degradation are shown in their own color, in the user's own words."
+    ],
+    "rules": [
+      {
+        "name": "The One Signal Rule",
+        "body": "Signal Periwinkle marks system activity and nothing else. If you cannot name the machine behavior a periwinkle element represents — focus, streaming, in-progress, commit — it should be neutral.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Voice Rule",
+        "body": "Chromatic color carries exactly two live meanings: periwinkle means the system is working or ready, coral means it stopped or failed. Green and amber are reserved for success and degradation respectively. There is no fifth meaning, and no color is introduced for aesthetic variety.",
+        "section": "colors"
+      },
+      {
+        "name": "The Wash Rule",
+        "body": "Semantic backgrounds are always the 10%-opacity wash of their own color, never a solid fill. Solid semantic fills are reserved for the single primary button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Off-Black Rule",
+        "body": "No surface is `#000` and no text is `#fff`. Both ends of the range are pulled inward so the tonal ladder has room to breathe.",
+        "section": "colors"
+      },
+      {
+        "name": "The Operable-Edge Rule",
+        "body": "Anything the user can operate carries the interactive hairline (`#5b6782`, ≥3:1 against its neighbours). Anything decorative carries the quiet hairline (`#252a35`). Quietness is a choice the system makes about ornament, never about whether a control can be found.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono-for-Numerals Rule",
+        "body": "Monospace is reserved for numbers and nothing else. Prose is never monospace, and any number that can change while the user watches carries `tabular-nums`.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Display Rule",
+        "body": "Exactly one element per screen uses the display tier. Everything else is 14px or smaller. If a new section seems to need a heading, it more likely needs a Title-tier label.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tracked-Label Rule",
+        "body": "Small text that names a thing gets positive letter-spacing (`0.025em`); small text that *is* the thing gets none. This is the only cue separating a 14px label from 14px content, so it is load-bearing.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Tray Rule",
+        "body": "Input and output are equal-weight siblings. Neither gets more space, a heavier border, a brighter surface, or a larger label than the other. The moment one tray dominates, the product stops reading as a two-step instrument.",
+        "section": "layout"
+      },
+      {
+        "name": "The No-Jump Rule",
+        "body": "Reserve the destination before content arrives. Matched 160px minimums exist so that streaming text never reflows the page around it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Single-Viewport Rule",
+        "body": "The whole task fits one screen at desktop width. New elements earn their place by displacing something, not by extending the page.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Every surface is flat at rest. A shadow is permitted only as a response to a state change (hover, focus, overlay), never to establish resting hierarchy.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Lighter-Is-Nearer Rule",
+        "body": "Surfaces get lighter as they get closer to the content, and every step up the ladder is accompanied by a border. Depth is read from lightness and outline, not from cast light.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Border-Instead-Of-Shadow Rule",
+        "body": "When a surface needs separating, reach for the hairline (`#252a35`) or the recessed hairline (`#1d212b`) first. The border is this system's shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Concentric Softening Rule",
+        "body": "A child element never has a larger radius than its parent. 16px containers hold 12px controls hold 6px badges. When adding a new nesting level, continue the sequence inward rather than repeating a radius.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Borders are 1px, always. The only 2px stroke in the system is the header's periwinkle rule, and it is identity, not structure.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Single Response Rule",
+        "body": "A control answers a state change with exactly one crisp change — a border shift, a 10% brightness lift, a 2% press. Never two changes at once, never a bounce, never a glow.",
+        "section": "components"
+      },
+      {
+        "name": "The Replace-Don't-Add Rule",
+        "body": "A control that changes function changes in place. \"Stop\" replaces \"Refine\" in the same slot; a second button never appears beside it. The action count stays constant so the eye never has to re-find the primary control.",
+        "section": "components"
+      },
+      {
+        "name": "The 150ms Rule",
+        "body": "State transitions run at 150ms on `cubic-bezier(0.16, 1, 0.3, 1)`. The 200ms and 300ms steps and the spring and in-out easings are declared and reserved for entrances and larger movements; they are not alternatives for state feedback.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** keep Signal Periwinkle (`#5b7cfa`) tied to system activity. Audit test: for every periwinkle element on screen, name the machine behavior it represents. If you cannot, make it neutral.",
+      "**Do** build depth from the tonal ladder — `#08090c` page, `#111318` panel, `#181c24` well, `#1f242e` reserved — with a 1px border at each boundary.",
+      "**Do** shrink radius as you nest: 16px container, 12px control, 6px badge. A child never rounds more than its parent.",
+      "**Do** give every new interactive control the focus standard — border-shift-plus-halo where there is a border, a 2px solid periwinkle ring at 2px offset where there is not — as `:focus-visible`, with the native outline suppressed only because it is being replaced.",
+      "**Do** put the interactive hairline (`#5b6782`) on anything operable and the quiet hairline (`#252a35`) on anything decorative. Audit test: if a user has to find the edge, it needs 3:1.",
+      "**Do** give any looping animation a reduced-motion alternative that *keeps the signal* and drops only the movement.",
+      "**Do** announce anything that arrives without a click: streamed output as a polite live region, errors as `role=\"alert\"`.",
+      "**Do** set `tabular-nums` on any number that changes while the user is watching.",
+      "**Do** add positive letter-spacing (`0.025em`) to 14px text that labels something, and none to 14px text that is content.",
+      "**Do** reserve the destination before content arrives — matched minimum heights, so streaming never reflows the page.",
+      "**Do** claim the reserved tokens before inventing new ones: `panel-3` for a fourth tonal step, `warning` for quota degradation, `accent-hover` for the primary button's hover fill. (`accent-2` is now spent — it belongs to the attribution dot.)",
+      "**Do** report degradation in the user's own words in a status note, in its own semantic color. Honest degradation is part of this interface's character."
+    ],
+    "donts": [
+      "**Don't** add a shadow to any surface at rest. Exhaust the tonal ladder and the two border weights first; a shadow is permitted only as a state response, and only as a named token with a stated trigger.",
+      "**Don't** introduce a light mode or a theme toggle. The dark field is a binding product constraint, not a default.",
+      "**Don't** add a fifth semantic color. Periwinkle, coral, green, and amber cover working, failed, succeeded, and degraded. There is no meaning left to assign.",
+      "**Don't** use a solid fill of a semantic color for anything but the primary button. Semantic backgrounds are 10% washes.",
+      "**Don't** put white (`#fff`) text on the periwinkle button. The label is Instrument Black (`#08090c`); the dark-on-blue inversion is deliberate.",
+      "**Don't** use monospace for prose. It belongs to numerals only.",
+      "**Don't** add a second display-tier heading. If a section seems to need one, it needs a Title-tier label instead.",
+      "**Don't** let either tray outweigh the other in space, border, surface tone, or label treatment.",
+      "**Don't** ship a new control that relies on the browser's default focus ring.",
+      "**Don't** use a 30%-opacity ring as a control's only focus indicator; at that opacity it measures 1.52:1 and is decoration.",
+      "**Don't** lean on a tonal step to make a boundary findable. The steps measure ~1.09:1 — they group, they do not delineate.",
+      "**Don't** kill animation wholesale under `prefers-reduced-motion`. Replace the motion, keep the meaning.",
+      "**Don't** stack two state changes on one interaction, and don't replace the caret's stepped blink with a smooth pulse.",
+      "**Don't** use `#000` or `#fff` anywhere. Both ends of the range stay pulled inward.",
+      "**Don't** let a declared token sit unreferenced in `globals.css`. Tokens that generate no utility (the former `--space-*` block) are a second source of truth that will drift; either wire them up or delete them."
+    ]
+  }
+}

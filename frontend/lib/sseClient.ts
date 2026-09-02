@@ -8,6 +8,12 @@
 //   event: chunk
 //   data: {"text":"..."}
 //
+//   event: reset
+//   data: {"ok":true}
+//
+//   event: attribution
+//   data: {"message":"via gemini-2.5-flash"}
+//
 //   event: done
 //   data: {"ok":true}
 //
@@ -16,7 +22,9 @@
 
 export type SSEEvent =
   | { type: "chunk"; text: string }
+  | { type: "reset" }
   | { type: "status"; message: string }
+  | { type: "attribution"; message: string }
   | { type: "done" }
   | { type: "error"; message: string };
 
@@ -99,8 +107,12 @@ function parseEvent(raw: string): SSEEvent | null {
     switch (event) {
       case "chunk":
         return { type: "chunk", text: payload.text ?? "" };
+      case "reset":
+        return { type: "reset" };
       case "status":
         return { type: "status", message: payload.message ?? "" };
+      case "attribution":
+        return { type: "attribution", message: payload.message ?? "" };
       case "done":
         return { type: "done" };
       case "error":

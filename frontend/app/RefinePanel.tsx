@@ -21,6 +21,7 @@ export default function RefinePanel() {
   });
   const [output, setOutput] = useState("");
   const [status, setStatus] = useState<string | null>(null);
+  const [attribution, setAttribution] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [streaming, setStreaming] = useState(false);
 
@@ -32,8 +33,16 @@ export default function RefinePanel() {
       case "chunk":
         setOutput((prev) => prev + ev.text);
         break;
+      case "reset":
+        // A model failed after already streaming; drop its partial text so the
+        // replacement result does not get appended to a half sentence.
+        setOutput("");
+        break;
       case "status":
         setStatus(ev.message);
+        break;
+      case "attribution":
+        setAttribution(ev.message);
         break;
       case "done":
         setStreaming(false);
@@ -49,6 +58,7 @@ export default function RefinePanel() {
 
   const onSubmit = useCallback(async () => {
     setError(null);
+    setAttribution(null);
     setStatus("Refining…");
     setOutput("");
     setStreaming(true);
@@ -76,6 +86,17 @@ export default function RefinePanel() {
     setStatus("Cancelled.");
   }, []);
 
+  // Stable identities so the memoized input panel is skipped while streaming.
+  const onFormalityChange = useCallback(
+    (v: number) => setScores((s) => ({ ...s, formality: v })),
+    []
+  );
+  const onFriendlinessChange = useCallback(
+    (v: number) => setScores((s) => ({ ...s, friendliness: v })),
+    []
+  );
+  const onCopy = useCallback(() => copy(output), [copy, output]);
+
   return (
     <div className="mx-auto max-w-[880px] px-6 py-12 sm:py-16">
       <header className="mb-8 border-l-2 border-accent pl-3">
@@ -92,9 +113,9 @@ export default function RefinePanel() {
           text={text}
           onTextChange={setText}
           formality={scores.formality}
-          onFormalityChange={(v) => setScores((s) => ({ ...s, formality: v }))}
+          onFormalityChange={onFormalityChange}
           friendliness={scores.friendliness}
-          onFriendlinessChange={(v) => setScores((s) => ({ ...s, friendliness: v }))}
+          onFriendlinessChange={onFriendlinessChange}
           disabled={streaming}
           onSubmit={onSubmit}
           onStop={onStop}
@@ -104,9 +125,10 @@ export default function RefinePanel() {
           output={output}
           streaming={streaming}
           status={status}
+          attribution={attribution}
           error={error}
           copied={copied}
-          onCopy={() => copy(output)}
+          onCopy={onCopy}
         />
       </div>
     </div>

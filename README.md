@@ -64,10 +64,18 @@ The backend converts these scores into a deterministic system prompt for every g
 The backend tries free-tier Gemini models in sequence:
 
 ```
-gemini-2.5-flash → gemini-2.5-flash-lite → gemini-2.5-pro → gemini-1.5-flash → gemini-1.5-flash-8b
+gemini-2.5-flash → gemini-flash-lite-latest → gemini-flash-latest
+  → gemini-2.5-flash-lite → gemini-2.5-pro
 ```
 
-If one model hits a quota limit (429), it backs off and retries the next. Each switch is surfaced in the UI so you know what happened — only after exhausting every option does it show an error.
+The order is by measured health, fastest-working first: every model that fails
+costs its own latency plus a backoff before the next is tried. The trailing two
+return `404 "no longer available to new users"` on newly issued keys and are
+kept only for self-hosted deployments with older key access.
+
+If one model hits a quota limit (429), is overloaded (503), or is unavailable to the key (404), it backs off and retries the next. Each switch is surfaced in the UI as a status note, and the model that actually produced the result is reported as a separate `attribution` event so it survives stream completion. Only after exhausting every option does it show an error.
+
+If a model fails *after* it has already streamed part of a result, the backend emits a `reset` event so the client discards the partial text instead of splicing the next model's output onto a half sentence.
 
 ### Abort support
 
@@ -112,7 +120,9 @@ The two-panel layout stacks vertically on mobile, with touch-friendly slider thu
 | event | data | meaning |
 |---|---|---|
 | `chunk` | `{"text":"…"}` | A streamed piece of the result |
-| `status` | `{"message":"…"}` | e.g., "switching to gemini-2.5-flash-lite…" |
+| `reset` | `{"ok":true}` | Discard text received so far — a model failed mid-stream and the next one is starting over |
+| `status` | `{"message":"…"}` | Transient progress, e.g. "Model … failed — switching…" |
+| `attribution` | `{"message":"via gemini-2.5-flash"}` | Which model produced the result. Separate from `status` so `done` does not clear it |
 | `done` | `{"ok":true}` | Stream finished successfully |
 | `error` | `{"message":"…"}` | Terminal error (including quota exhaustion) |
 
@@ -249,7 +259,8 @@ No `vercel.json`, no separate backend service, no Dockerfile. One command and yo
 - **Rate limiting (429) + fallback:** When a free-tier model hits its quota, the backend surfaces a `status` event describing the switch, waits briefly, and retries the next model. The user sees this as a soft notice, not a hard failure.
 - **Loading states:** The input, sliders, and main action button are disabled during streaming. A **Stop** button replaces **Refine** so you can abort at any time.
 - **Copy feedback:** The copy button shows a transient "Copied!" label after a successful write.
-- **Typing effect:** Streamed chunks append to the React state as they arrive. A CSS-animated caret blinks while the stream is active.
+- **Typing effect:** Streamed chunks append to the React state as they arrive. A CSS-animated caret blinks while the stream is active, and holds solid under `prefers-reduced-motion` so the "live" signal survives without the movement.
+- **Announced to assistive tech:** the output is a polite ARIA live region, errors use `role="alert"`, and the tone sliders expose `aria-valuetext`.
 
 ---
 

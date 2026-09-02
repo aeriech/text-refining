@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 interface ToneSliderProps {
   label: string;
   value: number;
@@ -23,28 +25,38 @@ export default function ToneSlider({
   midLabel,
   highLabel,
 }: ToneSliderProps) {
+  const id = useId();
   const description =
     value <= 3 ? lowLabel : value <= 7 ? midLabel : highLabel;
 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-text-secondary tracking-wide">{label}</span>
-        <span className="rounded-md border border-border bg-panel-2 px-2 py-1 text-xs font-mono text-text tabular-nums min-w-[34px] text-center">
+        <label
+          htmlFor={id}
+          className="text-sm font-medium text-text-secondary tracking-wide"
+        >
+          {label}
+        </label>
+        <span
+          aria-hidden="true"
+          className="rounded-badge border border-border bg-panel-2 px-2 py-1 text-xs font-mono text-text tabular-nums min-w-[34px] text-center"
+        >
           {value}
         </span>
       </div>
       <input
+        id={id}
         type="range"
         min={min}
         max={max}
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-accent cursor-pointer disabled:cursor-not-allowed"
-        aria-label={`${label}: ${description}`}
+        aria-valuetext={`${value} of ${max} — ${description}`}
+        className="w-full accent-accent cursor-pointer rounded-control outline-none transition-shadow duration-fast ease-out focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel disabled:cursor-not-allowed"
       />
-      <div className="flex justify-between text-[11px] text-text-tertiary">
+      <div className="flex justify-between text-label text-text-tertiary">
         <span>{lowLabel}</span>
         <span className="text-accent font-medium">{description}</span>
         <span>{highLabel}</span>
