@@ -8,24 +8,11 @@ type SSEEvent =
   | { readonly type: "done"; ok: boolean }
   | { readonly type: "error"; message: string };
 
-// Ordered by measured health, fastest-working first, because every model that
-// fails costs its own latency plus a backoff before the next one is tried.
-// Probed 2026-09-02 against a free-tier key:
-//   gemini-2.5-flash          200, ~7s   <- pinned, healthy
-//   gemini-flash-lite-latest  200, ~22s  <- works, slow
-//   gemini-flash-latest       503        <- alias, transient high demand
-//   gemini-2.5-flash-lite     404        <- "no longer available to new users"
-//   gemini-2.5-pro            404        <- "no longer available to new users"
-// The two 404s are kept as trailing fallbacks: they are an access restriction
-// on newer keys, not a removed endpoint, so a self-hosted older key may still
-// reach them. gemini-1.5-flash was dropped — it is not served on the v1beta
-// path this SDK uses, so it can never succeed here.
-const FREE_TIER_MODELS = [
-  "gemini-2.5-flash",
+export const FREE_TIER_MODELS = [
+  "gemini-3.5-flash-lite",
   "gemini-flash-lite-latest",
+  "gemini-3.6-flash",
   "gemini-flash-latest",
-  "gemini-2.5-flash-lite",
-  "gemini-2.5-pro",
 ] as const;
 
 // The default serverless limit (10s) is not enough to survive one failed
