@@ -8,7 +8,7 @@ type SSEEvent =
   | { readonly type: "done"; ok: boolean }
   | { readonly type: "error"; message: string };
 
-export const FREE_TIER_MODELS = [
+const FREE_TIER_MODELS = [
   "gemini-3.5-flash-lite",
   "gemini-flash-lite-latest",
   "gemini-3.6-flash",
