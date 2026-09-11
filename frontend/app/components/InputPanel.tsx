@@ -10,7 +10,6 @@ interface InputPanelProps {
   onFormalityChange: (value: number) => void;
   friendliness: number;
   onFriendlinessChange: (value: number) => void;
-  disabled?: boolean;
   onSubmit: () => void;
   onStop: () => void;
   streaming: boolean;
@@ -26,7 +25,6 @@ function InputPanel({
   onFormalityChange,
   friendliness,
   onFriendlinessChange,
-  disabled = false,
   onSubmit,
   onStop,
   streaming,
@@ -50,7 +48,7 @@ function InputPanel({
         id="input"
         placeholder="e.g. hey can u send me the doc asap thx"
         value={text}
-        disabled={disabled}
+        disabled={streaming}
         onChange={(e) => onTextChange(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && canSubmit) {
@@ -68,7 +66,7 @@ function InputPanel({
           label="Formality"
           value={formality}
           onChange={onFormalityChange}
-          disabled={disabled}
+          disabled={streaming}
           lowLabel="Casual"
           midLabel="Balanced"
           highLabel="Formal"
@@ -77,7 +75,7 @@ function InputPanel({
           label="Friendliness"
           value={friendliness}
           onChange={onFriendlinessChange}
-          disabled={disabled}
+          disabled={streaming}
           lowLabel="Direct"
           midLabel="Polite"
           highLabel="Warm"

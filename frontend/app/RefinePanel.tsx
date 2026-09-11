@@ -68,7 +68,10 @@ export default function RefinePanel() {
 
     try {
       await streamSSE(API_URL, { text, formality: scores.formality, friendliness: scores.friendliness }, { onEvent: handleEvent, signal: controller.signal });
-      setStreaming((s) => (s ? false : s));
+      // The stream can end without a `done`/`error` event (maxDuration kill, a
+      // proxy closing cleanly). Those events clear both in the normal case;
+      // this only sweeps up the transient banner they never got to clear.
+      setStreaming(false);
       setStatus((s) => (s === "Refining…" ? null : s));
     } catch (err) {
       if ((err as Error).name === "AbortError") {
@@ -116,7 +119,6 @@ export default function RefinePanel() {
           onFormalityChange={onFormalityChange}
           friendliness={scores.friendliness}
           onFriendlinessChange={onFriendlinessChange}
-          disabled={streaming}
           onSubmit={onSubmit}
           onStop={onStop}
           streaming={streaming}

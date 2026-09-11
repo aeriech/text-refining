@@ -2,43 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type CopyStatus = "idle" | "copied" | "failed";
-
-/**
- * Legacy path for insecure contexts. `execCommand` returns a boolean that must
- * be honoured — ignoring it reports success for a copy that never happened.
- */
-function legacyCopy(text: string): boolean {
-  const ta = document.createElement("textarea");
-  ta.value = text;
-  ta.setAttribute("readonly", "");
-  ta.style.position = "fixed";
-  ta.style.top = "0";
-  ta.style.left = "0";
-  ta.style.opacity = "0";
-  ta.style.pointerEvents = "none";
-  document.body.appendChild(ta);
-
-  try {
-    ta.focus();
-    ta.select();
-    // iOS ignores select() on a readonly textarea without an explicit range.
-    ta.setSelectionRange(0, text.length);
-    return document.execCommand("copy");
-  } catch {
-    return false;
-  } finally {
-    document.body.removeChild(ta);
-  }
-}
-
 /**
  * Copies text to the clipboard and exposes a transient status for UI feedback.
  * Failure is reported, never swallowed: the clipboard is this product's exit
  * path, so a user who believes they copied and did not loses the whole result.
  */
 export function useClipboard(resetMs = 1800) {
-  const [status, setStatus] = useState<CopyStatus>("idle");
+  const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(
@@ -54,12 +24,8 @@ export function useClipboard(resetMs = 1800) {
 
       let ok = false;
       try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          ok = true;
-        } else {
-          ok = legacyCopy(text);
-        }
+        await navigator.clipboard.writeText(text);
+        ok = true;
       } catch {
         ok = false;
       }
@@ -76,10 +42,5 @@ export function useClipboard(resetMs = 1800) {
     [resetMs]
   );
 
-  return {
-    status,
-    copied: status === "copied",
-    failed: status === "failed",
-    copy,
-  };
+  return { copied: status === "copied", failed: status === "failed", copy };
 }

@@ -6,8 +6,6 @@ interface ToneSliderProps {
   label: string;
   value: number;
   onChange: (value: number) => void;
-  min?: number;
-  max?: number;
   disabled?: boolean;
   lowLabel: string;
   midLabel: string;
@@ -18,8 +16,6 @@ export default function ToneSlider({
   label,
   value,
   onChange,
-  min = 1,
-  max = 10,
   disabled = false,
   lowLabel,
   midLabel,
@@ -48,12 +44,12 @@ export default function ToneSlider({
       <input
         id={id}
         type="range"
-        min={min}
-        max={max}
+        min={1}
+        max={10}
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
-        aria-valuetext={`${value} of ${max} — ${description}`}
+        aria-valuetext={`${value} of 10 — ${description}`}
         className="w-full accent-accent cursor-pointer rounded-control outline-none transition-shadow duration-fast ease-out focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel disabled:cursor-not-allowed"
       />
       <div className="flex justify-between text-label text-text-tertiary">

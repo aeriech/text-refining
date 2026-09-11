@@ -1,12 +1,5 @@
 import { ChatSession, GoogleGenerativeAI } from "@google/generative-ai";
-
-type SSEEvent =
-  | { readonly type: "chunk"; text: string }
-  | { readonly type: "reset"; ok: boolean }
-  | { readonly type: "status"; message: string }
-  | { readonly type: "attribution"; message: string }
-  | { readonly type: "done"; ok: boolean }
-  | { readonly type: "error"; message: string };
+import type { SSEEvent } from "@/lib/sseClient";
 
 const FREE_TIER_MODELS = [
   "gemini-3.5-flash-lite",
@@ -162,7 +155,7 @@ async function* runStreamWithFallback(
         // transient progress message, and previously wiped this in the same
         // tick so the user never saw which model produced the result.
         yield { type: "attribution", message: `via ${model}` };
-        yield { type: "done", ok: true };
+        yield { type: "done" };
         return;
       }
 
@@ -177,7 +170,7 @@ async function* runStreamWithFallback(
       // This model already streamed text, so the client is holding a partial
       // sentence. Tell it to drop that before the next model appends to it.
       if (streamed) {
-        yield { type: "reset", ok: true };
+        yield { type: "reset" };
       }
 
       yield {
@@ -218,15 +211,10 @@ export async function POST(request: Request) {
     });
   }
 
-  const formality = clamp(body.formality ?? 5, 1, 10);
-  const friendliness = clamp(body.friendliness ?? 5, 1, 10);
+  const formality = body.formality ?? 5;
+  const friendliness = body.friendliness ?? 5;
 
-  if (
-    body.formality < 1 ||
-    body.formality > 10 ||
-    body.friendliness < 1 ||
-    body.friendliness > 10
-  ) {
+  if (formality < 1 || formality > 10 || friendliness < 1 || friendliness > 10) {
     return new Response(
       JSON.stringify({ error: "scores must be between 1 and 10" }),
       {

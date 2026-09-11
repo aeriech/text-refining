@@ -9,13 +9,13 @@
 //   data: {"text":"..."}
 //
 //   event: reset
-//   data: {"ok":true}
+//   data: {"type":"reset"}
 //
 //   event: attribution
 //   data: {"message":"via gemini-2.5-flash"}
 //
 //   event: done
-//   data: {"ok":true}
+//   data: {"type":"done"}
 //
 //   event: error
 //   data: {"message":"..."}
