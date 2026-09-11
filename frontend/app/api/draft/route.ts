@@ -106,6 +106,7 @@ function buildSystemPrompt(formality: number, friendliness: number): string {
     `Friendliness score (1-10): ${w}.`,
     "",
     "Rules:",
+    "- Write the output in the same language as the input (including Tagalog, Taglish, or any other language). Never translate.",
     "- Preserve the user's original meaning, intent, and any key facts or names.",
     "- Fix grammar, spelling, and punctuation.",
     "- Do not add new information that was not implied by the original.",
